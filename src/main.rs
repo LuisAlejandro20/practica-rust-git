@@ -42,5 +42,31 @@ fn run(config: Config) -> Result<(), std::io::Error> {
         println!("{line}");
     }
 
-    OK(())
+    Ok(())
+}
+
+fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
+    let mut results = Vec::new();
+    for line in contents.lines() {
+        if line.contains(query) {
+            results.push(line);
+        }
+    }
+    results
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn un_resultado() {
+        let query = "seguro";
+        let contents = "\
+Rust:
+seguro, rápido, productivo.
+Elige tres.";
+
+        assert_eq!(vec!["seguro, rápido, productivo."], search(query, contents));
+    }
 }
