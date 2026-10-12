@@ -23,7 +23,7 @@ fn main() {
     let args: Vec<String> = env::args().collect();
 
     let config = Config::build(&args).unwrap_or_else(|err| {
-        eprintln!("Problema al analizar los argumentos: {}", err;
+        eprintln!("Problema al analizar los argumentos: {}", err);
         process::exit(1);
     });
 
@@ -33,4 +33,14 @@ fn main() {
         eprintln!("Error en la aplicación: {e}");
         process::exit(1);
     }
+}
+
+fn run(config: Config) -> Result<(), std::io::Error> {
+    let contents = fs::read_to_string(config.file_path)?;
+
+    for line in search(&config.query, &contents) {
+        println!("{line}");
+    }
+
+    OK(())
 }
